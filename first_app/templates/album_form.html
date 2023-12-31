@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% block content %}
+<h2>{% if album %}Edit Album{% else %}Create Album{% endif %}</h2>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">
+    {% if album %}Update{% else %}Create{% endif %} Album
+  </button>
+</form>
+<p><a href="{% url 'musician-list' %}">Back to Musician List</a></p>
+{% endblock %}

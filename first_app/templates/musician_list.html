@@ -1,0 +1,46 @@
+<!-- musician_list.html -->
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Musician Name</th>
+      <th>Email</th>
+      <th>Album Rating</th>
+      <th>Instrument Type</th>
+      <th>Album Name</th>
+      <th>Release Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for musician in object_list %}
+    <tr>
+      <td>{{ musician.id }}</td>
+      <td>
+        <a href="{% url 'musician-update' musician.id %}"
+          >{{ musician.first_name }} {{ musician.last_name }}</a
+        >
+      </td>
+      <td>{{ musician.email }}</td>
+      <td>
+        {{ musician.album_set.aggregate(avg_rating=Avg('rating')).avg_rating }}
+      </td>
+      <td>{{ musician.instrument_type }}</td>
+      {% if musician.album_set.all %}
+      <td>{{ musician.album_set.first.album_name }}</td>
+      <td>{{ musician.album_set.first.release_date }}</td>
+      {% else %}
+      <td></td>
+      <td></td>
+      {% endif %}
+      <td>
+        <a href="{% url 'album-update' musician.album_set.first.id %}">Edit</a>
+        <a href="{% url 'album-delete' musician.album_set.first.id %}"
+          >Delete</a
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
